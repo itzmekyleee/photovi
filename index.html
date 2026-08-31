@@ -14,12 +14,13 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/svg+xml" href="assets/photovi_logo.svg" />
   </head>
   <body>
     <header class="topbar">
       <div class="topbar-left">
         <a class="logo" href="#" data-screen-link="booth" aria-label="Photovi home">
-          <span class="logo-mark">P</span>
+          <span class="logo-mark"><img src="assets/photovi_logo.svg" alt="" /></span>
           <span class="logo-text">Photovi</span>
         </a>
         <span class="tagline">Snap it. Strip it. Share it.</span>
@@ -27,6 +28,9 @@
       <div class="topbar-actions">
         <button class="icon-btn" id="mute-btn" title="Toggle sound" aria-label="Toggle sound">
           <span class="icon-btn-glyph" id="mute-glyph">&#128266;</span>
+        </button>
+        <button class="icon-btn" id="theme-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
+          <span class="icon-btn-glyph" id="theme-glyph" aria-hidden="true">&#127769;</span>
         </button>
         <button class="icon-btn" id="gallery-btn" title="Your strips" aria-label="Open your strips">
           <span class="icon-btn-glyph">&#128451;</span>

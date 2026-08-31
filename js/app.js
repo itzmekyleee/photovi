@@ -112,6 +112,8 @@ import {
   const toastEl = $('toast');
   const muteBtn = $('mute-btn');
   const muteGlyph = $('mute-glyph');
+  const themeBtn = $('theme-btn');
+  const themeGlyph = $('theme-glyph');
 
   const confirmModal = $('confirm-modal');
   const confirmTitle = $('confirm-title');
@@ -130,6 +132,7 @@ import {
   const galleryEmpty = $('gallery-empty');
   const galleryFilters = $('gallery-filters');
   let galleryRecords = [];
+  let galleryFiltered = [];
   let galleryView = [];
 
   const recordPos = $('record-pos');
@@ -1009,6 +1012,7 @@ import {
       }
       return (rec.layout || LAYOUTS[0].id) === state.galleryFilter;
     });
+    galleryFiltered = filtered;
     grid.innerHTML = '';
     sub.textContent = galleryRecords.length
       ? `${galleryRecords.length} strip${galleryRecords.length === 1 ? '' : 's'} saved on this device`
@@ -1033,7 +1037,7 @@ import {
       );
       card.append(thumb, meta);
       thumb.appendChild(c);
-      card.addEventListener('click', () => openRecord(rec.id));
+      card.addEventListener('click', () => openRecord(rec.id, 0, true));
       composeThumb(c, rec);
       return card;
     };
@@ -1106,9 +1110,10 @@ import {
     }
   }
 
-  async function openRecord(id, dir = 0) {
+  async function openRecord(id, dir = 0, initNav = false) {
     const rec = await getStrip(id);
     if (!rec) return;
+    if (initNav) galleryView = galleryFiltered.length ? galleryFiltered.slice() : [];
     if (state.record) {
       state.record.urls.forEach((u) => URL.revokeObjectURL(u));
       state.record = null;
@@ -1344,6 +1349,32 @@ import {
     });
   }
 
+  // ---------- UI theme ----------
+  const UI_THEME_KEY = 'photovi_theme';
+
+  function applyUiTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    themeGlyph.textContent = t === 'dark' ? '\u{1F319}' : '\u{2600}\u{FE0F}';
+    localStorage.setItem(UI_THEME_KEY, t);
+  }
+
+  function currentUiTheme() {
+    const saved = localStorage.getItem(UI_THEME_KEY);
+    if (saved === 'light' || saved === 'dark') return saved;
+    const prefersDark =
+      window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  }
+
+  function initUiTheme() {
+    applyUiTheme(currentUiTheme());
+    themeBtn.addEventListener('click', () => {
+      const next =
+        document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      applyUiTheme(next);
+    });
+  }
+
   // ---------- Mute ----------
   function refreshMute() {
     muteGlyph.textContent = isMuted() ? '\u{1F507}' : '\u{1F50A}';
@@ -1364,6 +1395,7 @@ import {
     wireStyle();
     wireTabs();
     wireViewfinderTap();
+    initUiTheme();
 
     $('request-camera').addEventListener('click', startCamera);
     startBtn.addEventListener('click', startSession);

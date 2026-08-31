@@ -1,0 +1,26 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bladeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+
+    <filter id="bladeShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Transparent background — safe for adaptive_icon_foreground -->
+  <!-- Same aperture iris as photovi_logo.svg, no card/background -->
+  <g filter="url(#bladeShadow)" transform="translate(512 512)">
+    <g id="blade" fill="url(#bladeGradient)">
+      <path d="M 0 -230 L 155 -95 L 70 -30 L -20 -160 Z"/>
+    </g>
+    <use href="#blade" transform="rotate(60)"/>
+    <use href="#blade" transform="rotate(120)"/>
+    <use href="#blade" transform="rotate(180)"/>
+    <use href="#blade" transform="rotate(240)"/>
+    <use href="#blade" transform="rotate(300)"/>
+  </g>
+</svg>
