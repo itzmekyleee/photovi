@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Photovi — Browser Photo Booth</title>
+    <meta
+      name="description"
+      content="A private, in-browser photo booth. Snap it. Strip it. Share it."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-left">
+        <a class="logo" href="#" data-screen-link="booth" aria-label="Photovi home">
+          <span class="logo-mark">P</span>
+          <span class="logo-text">Photovi</span>
+        </a>
+        <span class="tagline">Snap it. Strip it. Share it.</span>
+      </div>
+      <div class="topbar-actions">
+        <button class="icon-btn" id="mute-btn" title="Toggle sound" aria-label="Toggle sound">
+          <span class="icon-btn-glyph" id="mute-glyph">&#128266;</span>
+        </button>
+        <button class="icon-btn" id="gallery-btn" title="Your strips" aria-label="Open your strips">
+          <span class="icon-btn-glyph">&#128451;</span>
+        </button>
+      </div>
+    </header>
+
+    <main id="app">
+      <!-- SCREEN 1: BOOTH -->
+      <section id="screen-booth" class="screen active">
+        <div class="stage">
+          <div class="viewfinder viewfinder-portrait" id="viewfinder">
+            <video id="video" autoplay playsinline muted></video>
+            <canvas id="live-canvas"></canvas>
+            <div class="viewfinder-title" id="viewfinder-title">Live preview</div>
+            <div class="countdown" id="countdown"></div>
+            <div class="tap-pulse" id="tap-pulse"></div>
+            <div class="permission-gate" id="permission-gate">
+              <div class="gate-icon">📸</div>
+              <p class="gate-title">Your camera is off</p>
+              <p class="gate-sub">
+                Everything stays in your browser. Turn on your camera to get
+                started.
+              </p>
+              <button class="btn btn-primary" id="request-camera">
+                Enable camera
+              </button>
+              <p class="gate-error" id="gate-error"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-tabs">
+            <button class="panel-tab active" data-tab="capture">Capture</button>
+            <button class="panel-tab" data-tab="style">Style</button>
+          </div>
+
+          <!-- CAPTURE TAB -->
+          <div class="panel-body" data-tabbody="capture">
+            <div class="panel-group col-span-2">
+              <div class="panel-group-title">Frame</div>
+              <div class="panel-group-grid">
+                <div class="field">
+                  <span class="control-label">Orientation</span>
+                  <div class="chips" id="orientation-row"></div>
+                </div>
+                <div class="field">
+                  <span class="control-label">Layout</span>
+                  <div class="chips" id="layout-row"></div>
+                </div>
+                <div class="field">
+                  <span class="control-label">Shots</span>
+                  <div class="chips chips-shots" id="shot-row"></div>
+                  <div class="shot-stepper hidden" id="shot-stepper">
+                    <button class="stepper-btn" id="shot-minus" type="button" aria-label="Fewer shots">&#8722;</button>
+                    <span class="stepper-value" id="shot-value">6</span>
+                    <button class="stepper-btn" id="shot-plus" type="button" aria-label="More shots">&#43;</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-group col-span-2">
+              <div class="panel-group-title">Camera</div>
+              <div class="panel-group-grid">
+                <div class="field col-span-2">
+                  <span class="control-label">Filter</span>
+                  <div class="chips chips-filter" id="filter-row"></div>
+                </div>
+                <div class="field">
+                  <span class="control-label">Resolution</span>
+                  <div class="chips" id="resolution-row"></div>
+                </div>
+                <div class="field">
+                  <span class="control-label">View</span>
+                  <div class="chips">
+                    <button class="chip" id="flip-camera">Flip camera</button>
+                    <button class="chip" id="mirror-toggle">Mirror: on</button>
+                    <button class="chip hidden" id="torch-btn">Torch</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STYLE TAB -->
+          <div class="panel-body hidden" data-tabbody="style">
+            <div class="panel-group col-span-2">
+              <div class="panel-group-title">Theme</div>
+              <div class="panel-group-grid">
+                <div class="field col-span-2">
+                  <div class="chips chips-filter" id="theme-row"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-group col-span-2">
+              <div class="panel-group-title">Text</div>
+              <div class="panel-group-grid">
+                <div class="field">
+                  <span class="control-label">Strip title</span>
+                  <input class="text-input" id="title-input" type="text" maxlength="24" value="PHOTOVI" />
+                </div>
+                <div class="field">
+                  <span class="control-label">Subtitle</span>
+                  <input class="text-input" id="subtitle-input" type="text" maxlength="42" placeholder="a little moment" />
+                </div>
+                <div class="field">
+                  <span class="control-label">Accent</span>
+                  <label class="color-field">
+                    <input type="color" id="accent-color" value="#df6a2e" />
+                  </label>
+                </div>
+                <div class="field">
+                  <span class="control-label">Backdrop</span>
+                  <label class="color-field">
+                    <input type="color" id="bg-color" value="#faf7f2" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Capture tray -->
+        <div class="capture-tray">
+          <div class="live-strip-wrap hidden" id="live-strip-wrap">
+            <span class="control-label">Your strip</span>
+            <canvas id="live-strip"></canvas>
+          </div>
+          <div class="capture-block">
+            <span class="control-label">Session</span>
+            <div class="shot-counter" id="shot-counter"></div>
+            <button class="btn btn-capture" id="start-capture" disabled>
+              Start session
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SCREEN 2: RESULT -->
+      <section id="screen-result" class="screen">
+        <div class="result-layout">
+          <div class="result-main">
+            <div class="result-wrap">
+              <canvas id="result-canvas"></canvas>
+            </div>
+            <div class="result-actions">
+              <button class="btn btn-ghost" id="dl-png">&#11015; PNG</button>
+              <button class="btn btn-ghost" id="dl-jpg">&#11015; JPG</button>
+              <button class="btn btn-ghost" id="copy-btn">Copy</button>
+              <button class="btn btn-ghost" id="share-btn">Share</button>
+              <button class="btn btn-ghost" id="gif-btn">GIF loop</button>
+            </div>
+          </div>
+          <aside class="result-side">
+            <div class="side-section">
+              <div class="side-title">Frames</div>
+              <div class="frame-list" id="frame-list"></div>
+              <div class="side-actions">
+                <button class="btn btn-ghost" id="retake-all">Retake all</button>
+                <button class="btn btn-primary" id="new-session">New session</button>
+              </div>
+            </div>
+
+            <div class="side-section" id="sticker-section">
+              <div class="side-title">
+                Stickers
+                <span class="side-hint">select a frame first</span>
+              </div>
+              <div class="emoji-row" id="emoji-row"></div>
+              <div class="stick-controls">
+                <label class="stick-size">
+                  <span>Size</span>
+                  <input type="range" id="stick-size" min="12" max="46" value="26" />
+                </label>
+                <button class="chip" id="remove-sticker">Remove sticker</button>
+                <button class="chip chip-muted" id="clear-stickers">Clear all</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <!-- SCREEN 3: GALLERY -->
+      <section id="screen-gallery" class="screen">
+        <div class="gallery-head">
+          <button class="btn btn-ghost gallery-back" id="gallery-back">&#8592; Back</button>
+          <h2 class="gallery-title">Your strips</h2>
+          <span class="gallery-sub" id="gallery-sub"></span>
+        </div>
+        <div class="gallery-filters" id="gallery-filters"></div>
+        <div class="gallery-grid" id="gallery-grid"></div>
+        <div class="gallery-empty hidden" id="gallery-empty">
+          <div class="gallery-empty-icon">&#128451;</div>
+          <p>No strips yet. Take your first one and it will live here, safely in your browser.</p>
+          <button class="btn btn-primary" data-screen-link="booth">Take a strip</button>
+        </div>
+      </section>
+
+      <!-- SCREEN 4: RECORD -->
+      <section id="screen-record" class="screen">
+        <div class="result-layout">
+          <div class="result-main">
+            <div class="result-wrap">
+              <canvas id="record-canvas"></canvas>
+              <button class="record-nav record-nav-prev" id="record-prev" type="button" aria-label="Previous strip">&#8249;</button>
+              <button class="record-nav record-nav-next" id="record-next" type="button" aria-label="Next strip">&#8250;</button>
+            </div>
+          </div>
+          <aside class="result-side">
+            <div class="side-section">
+              <div class="side-title">
+                <span id="record-title">Strip</span>
+                <span class="record-pos" id="record-pos"></span>
+              </div>
+              <div class="record-meta" id="record-meta"></div>
+              <div class="side-actions">
+                <button class="btn btn-ghost" id="record-back">&#8630; Back</button>
+                <button class="btn btn-danger" id="record-delete">Delete</button>
+              </div>
+            </div>
+            <div class="result-actions result-actions-side">
+              <button class="btn btn-ghost" id="rec-dl-png">&#11015; PNG</button>
+              <button class="btn btn-ghost" id="rec-dl-jpg">&#11015; JPG</button>
+              <button class="btn btn-ghost" id="rec-copy-btn">Copy</button>
+              <button class="btn btn-ghost" id="rec-share-btn">Share</button>
+              <button class="btn btn-ghost" id="rec-gif-btn">GIF loop</button>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status"></div>
+
+    <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+      <div class="modal-card">
+        <h3 class="modal-title" id="confirm-title">Delete this strip?</h3>
+        <p class="modal-text" id="confirm-text">
+          This strip will be permanently removed from your gallery.
+        </p>
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="confirm-cancel">Cancel</button>
+          <button class="btn btn-danger" id="confirm-ok">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="capture-canvas" style="display: none"></canvas>
+
+    <script src="vendor/confetti.browser.min.js"></script>
+    <script src="vendor/gif.js"></script>
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>
