@@ -25,7 +25,7 @@ export function layoutById(id) {
 }
 
 export const THEMES = [
-  { id: 'classic', label: 'Classic', bg: '#fafafc', header: '#1c1c1e', accent: '#df6a2e', caption: '#8e8e93', cellStroke: 'transparent' },
+  { id: 'classic', label: 'Classic', bg: '#f5f3ff', header: '#1e1b4b', accent: '#8b5cf6', caption: '#9ca3af', cellStroke: 'transparent' },
   { id: 'neon', label: 'Neon', bg: '#140f1e', header: '#f7f2ff', accent: '#38e5c7', caption: '#9d93b8', cellStroke: 'rgba(56,229,199,0.45)' },
   { id: 'pastel', label: 'Pastel', bg: '#fdf3f5', header: '#5a4a56', accent: '#ef7fa3', caption: '#a68f9c', cellStroke: 'rgba(239,127,163,0.35)' },
   { id: 'studio', label: 'Studio', bg: '#eef0f3', header: '#22262b', accent: '#3b5bdb', caption: '#7d8590', cellStroke: 'rgba(59,91,219,0.4)' },

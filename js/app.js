@@ -67,7 +67,7 @@ import {
 
   const state = {
     filter: FILTERS[0],
-    orientation: 'portrait',
+    orientation: 'landscape',
     layout: LAYOUTS[0],
     shots: LAYOUTS[0].shots[0],
     res: 'auto',
@@ -1394,6 +1394,15 @@ import {
     syncStyleToPanel();
     wireStyle();
     wireTabs();
+
+    // Wire collapsible panel sections
+    document.querySelectorAll('.panel-section-header[data-toggle]').forEach(header => {
+      header.addEventListener('click', () => {
+        const section = document.getElementById(header.dataset.toggle);
+        if (section) section.classList.toggle('collapsed');
+      });
+    });
+
     wireViewfinderTap();
     initUiTheme();
 

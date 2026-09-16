@@ -21,7 +21,7 @@
       <div class="topbar-left">
         <a class="logo" href="#" data-screen-link="booth" aria-label="Photovi home">
           <span class="logo-mark"><img src="assets/photovi_logo.svg" alt="" /></span>
-          <span class="logo-text">Photovi</span>
+          <span class="logo-text gradient-text">Photovi</span>
         </a>
         <span class="tagline">Snap it. Strip it. Share it.</span>
       </div>
@@ -71,46 +71,56 @@
 
           <!-- CAPTURE TAB -->
           <div class="panel-body" data-tabbody="capture">
-            <div class="panel-group col-span-2">
-              <div class="panel-group-title">Frame</div>
-              <div class="panel-group-grid">
-                <div class="field">
-                  <span class="control-label">Orientation</span>
-                  <div class="chips" id="orientation-row"></div>
-                </div>
-                <div class="field">
-                  <span class="control-label">Layout</span>
-                  <div class="chips" id="layout-row"></div>
-                </div>
-                <div class="field">
-                  <span class="control-label">Shots</span>
-                  <div class="chips chips-shots" id="shot-row"></div>
-                  <div class="shot-stepper hidden" id="shot-stepper">
-                    <button class="stepper-btn" id="shot-minus" type="button" aria-label="Fewer shots">&#8722;</button>
-                    <span class="stepper-value" id="shot-value">6</span>
-                    <button class="stepper-btn" id="shot-plus" type="button" aria-label="More shots">&#43;</button>
+            <div class="panel-section col-span-2" id="section-frame">
+              <div class="panel-section-header" data-toggle="section-frame">
+                <span class="panel-group-title" style="margin-bottom:0">Frame</span>
+                <span class="chevron">&#9662;</span>
+              </div>
+              <div class="panel-section-body">
+                <div class="panel-group-grid">
+                  <div class="field">
+                    <span class="control-label">Orientation</span>
+                    <div class="segmented-control" id="orientation-row"></div>
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Layout</span>
+                    <div class="chips" id="layout-row"></div>
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Shots</span>
+                    <div class="chips chips-shots" id="shot-row"></div>
+                    <div class="shot-stepper hidden" id="shot-stepper">
+                      <button class="stepper-btn" id="shot-minus" type="button" aria-label="Fewer shots">&#8722;</button>
+                      <span class="stepper-value" id="shot-value">6</span>
+                      <button class="stepper-btn" id="shot-plus" type="button" aria-label="More shots">&#43;</button>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="panel-group col-span-2">
-              <div class="panel-group-title">Camera</div>
-              <div class="panel-group-grid">
-                <div class="field col-span-2">
-                  <span class="control-label">Filter</span>
-                  <div class="chips chips-filter" id="filter-row"></div>
-                </div>
-                <div class="field">
-                  <span class="control-label">Resolution</span>
-                  <div class="chips" id="resolution-row"></div>
-                </div>
-                <div class="field">
-                  <span class="control-label">View</span>
-                  <div class="chips">
-                    <button class="chip" id="flip-camera">Flip camera</button>
-                    <button class="chip" id="mirror-toggle">Mirror: on</button>
-                    <button class="chip hidden" id="torch-btn">Torch</button>
+            <div class="panel-section col-span-2" id="section-camera">
+              <div class="panel-section-header" data-toggle="section-camera">
+                <span class="panel-group-title" style="margin-bottom:0">Camera</span>
+                <span class="chevron">&#9662;</span>
+              </div>
+              <div class="panel-section-body">
+                <div class="panel-group-grid">
+                  <div class="field col-span-2">
+                    <span class="control-label">Filter</span>
+                    <div class="chips chips-filter" id="filter-row"></div>
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Resolution</span>
+                    <div class="chips" id="resolution-row"></div>
+                  </div>
+                  <div class="field">
+                    <span class="control-label">View</span>
+                    <div class="chips">
+                      <button class="chip" id="flip-camera">Flip camera</button>
+                      <button class="chip" id="mirror-toggle">Mirror: on</button>
+                      <button class="chip hidden" id="torch-btn">Torch</button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,37 +129,47 @@
 
           <!-- STYLE TAB -->
           <div class="panel-body hidden" data-tabbody="style">
-            <div class="panel-group col-span-2">
-              <div class="panel-group-title">Theme</div>
-              <div class="panel-group-grid">
-                <div class="field col-span-2">
-                  <div class="chips chips-filter" id="theme-row"></div>
+            <div class="panel-section col-span-2" id="section-theme">
+              <div class="panel-section-header" data-toggle="section-theme">
+                <span class="panel-group-title" style="margin-bottom:0">Theme</span>
+                <span class="chevron">&#9662;</span>
+              </div>
+              <div class="panel-section-body">
+                <div class="panel-group-grid">
+                  <div class="field col-span-2">
+                    <div class="chips chips-filter" id="theme-row"></div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div class="panel-group col-span-2">
-              <div class="panel-group-title">Text</div>
-              <div class="panel-group-grid">
-                <div class="field">
-                  <span class="control-label">Strip title</span>
-                  <input class="text-input" id="title-input" type="text" maxlength="24" value="PHOTOVI" />
-                </div>
-                <div class="field">
-                  <span class="control-label">Subtitle</span>
-                  <input class="text-input" id="subtitle-input" type="text" maxlength="42" placeholder="a little moment" />
-                </div>
-                <div class="field">
-                  <span class="control-label">Accent</span>
-                  <label class="color-field">
-                    <input type="color" id="accent-color" value="#df6a2e" />
-                  </label>
-                </div>
-                <div class="field">
-                  <span class="control-label">Backdrop</span>
-                  <label class="color-field">
-                    <input type="color" id="bg-color" value="#faf7f2" />
-                  </label>
+            <div class="panel-section col-span-2" id="section-text">
+              <div class="panel-section-header" data-toggle="section-text">
+                <span class="panel-group-title" style="margin-bottom:0">Text</span>
+                <span class="chevron">&#9662;</span>
+              </div>
+              <div class="panel-section-body">
+                <div class="panel-group-grid">
+                  <div class="field">
+                    <span class="control-label">Strip title</span>
+                    <input class="text-input" id="title-input" type="text" maxlength="24" value="PHOTOVI" />
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Subtitle</span>
+                    <input class="text-input" id="subtitle-input" type="text" maxlength="42" placeholder="a little moment" />
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Accent</span>
+                    <label class="color-field">
+                      <input type="color" id="accent-color" value="#8b5cf6" />
+                    </label>
+                  </div>
+                  <div class="field">
+                    <span class="control-label">Backdrop</span>
+                    <label class="color-field">
+                      <input type="color" id="bg-color" value="#f5f3ff" />
+                    </label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -166,7 +186,7 @@
             <span class="control-label">Session</span>
             <div class="shot-counter" id="shot-counter"></div>
             <button class="btn btn-capture" id="start-capture" disabled>
-              Start session
+              <span>&#9654;</span> Start session
             </button>
           </div>
         </div>
@@ -180,11 +200,11 @@
               <canvas id="result-canvas"></canvas>
             </div>
             <div class="result-actions">
-              <button class="btn btn-ghost" id="dl-png">&#11015; PNG</button>
-              <button class="btn btn-ghost" id="dl-jpg">&#11015; JPG</button>
-              <button class="btn btn-ghost" id="copy-btn">Copy</button>
-              <button class="btn btn-ghost" id="share-btn">Share</button>
-              <button class="btn btn-ghost" id="gif-btn">GIF loop</button>
+              <button class="btn btn-ghost btn-sm" id="dl-png">&#11015; PNG</button>
+              <button class="btn btn-ghost btn-sm" id="dl-jpg">&#11015; JPG</button>
+              <button class="btn btn-ghost btn-sm" id="copy-btn">&#128203; Copy</button>
+              <button class="btn btn-ghost btn-sm" id="share-btn">&#128228; Share</button>
+              <button class="btn btn-ghost btn-sm" id="gif-btn">&#127916; GIF</button>
             </div>
           </div>
           <aside class="result-side">
@@ -257,9 +277,9 @@
             <div class="result-actions result-actions-side">
               <button class="btn btn-ghost" id="rec-dl-png">&#11015; PNG</button>
               <button class="btn btn-ghost" id="rec-dl-jpg">&#11015; JPG</button>
-              <button class="btn btn-ghost" id="rec-copy-btn">Copy</button>
-              <button class="btn btn-ghost" id="rec-share-btn">Share</button>
-              <button class="btn btn-ghost" id="rec-gif-btn">GIF loop</button>
+              <button class="btn btn-ghost" id="rec-copy-btn">&#128203; Copy</button>
+              <button class="btn btn-ghost" id="rec-share-btn">&#128228; Share</button>
+              <button class="btn btn-ghost" id="rec-gif-btn">&#127916; GIF</button>
             </div>
           </aside>
         </div>
