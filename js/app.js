@@ -1384,6 +1384,7 @@ import {
   function init() {
     syncDpr();
     buildOrientationChips();
+    applyOrientationClass();
     buildLayoutChips();
     buildShotChips();
     wireShotStepper();
