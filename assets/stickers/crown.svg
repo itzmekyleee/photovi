@@ -1,0 +1,33 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "crown" — Crown. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FDE68A"/>
+      <stop offset="1" stop-color="#D97706"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <path d="M3.4 8.2L7.4 12.4L12 4.2L16.6 12.4L20.6 8.2L19.1 19.4H4.9Z"
+          fill="url(#g)" stroke="#B45309" stroke-width="0.7" stroke-linejoin="round"/>
+    <rect x="4.5" y="17.4" width="15" height="2.7" rx="1.35" fill="#B45309"/>
+    <g><circle cx="12" cy="16" r="1.15" fill="#A78BFA"/>
+       <circle cx="8" cy="16" r="1.15" fill="#5EEAD4"/>
+       <circle cx="16" cy="16" r="1.15" fill="#F9A8D4"/></g>
+    <g fill="#FCD34D"><circle cx="3.4" cy="8.2" r="1.6"/><circle cx="12" cy="4.2" r="1.6"/>
+       <circle cx="20.6" cy="8.2" r="1.6"/></g>
+    </g>
+  </g>
+</svg>

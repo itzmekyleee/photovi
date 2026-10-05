@@ -1,0 +1,34 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "rainbow" — Rainbow. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#BAE6FD"/>
+      <stop offset="1" stop-color="#60A5FA"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <g fill="none" stroke-width="2.7" stroke-linecap="round">
+      <path d="M2.4 18A9.6 9.6 0 0 1 21.6 18" stroke="#EF4444"/>
+      <path d="M4.8 18A7.2 7.2 0 0 1 19.2 18" stroke="#F59E0B"/>
+      <path d="M7.2 18A4.8 4.8 0 0 1 16.8 18" stroke="#38E5C7"/>
+    </g>
+    <g fill="#E2E8F0">
+      <circle cx="3.8" cy="18.5" r="2.6"/><circle cx="6.8" cy="19.1" r="2"/>
+      <circle cx="20.2" cy="18.5" r="2.6"/><circle cx="17.2" cy="19.1" r="2"/>
+    </g>
+    </g>
+  </g>
+</svg>

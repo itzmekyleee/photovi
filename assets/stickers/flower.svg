@@ -1,0 +1,33 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "flower" — Flower. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="petal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBCFE8"/>
+      <stop offset="1" stop-color="#F472B6"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(0 12 12)" fill="url(#petal)"/>
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(60 12 12)" fill="url(#petal)"/>
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(120 12 12)" fill="url(#petal)"/>
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(180 12 12)" fill="url(#petal)"/>
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(240 12 12)" fill="url(#petal)"/>
+    <ellipse cx="12" cy="6.6" rx="3.1" ry="4.6" transform="rotate(300 12 12)" fill="url(#petal)"/>
+    <circle cx="12" cy="12" r="3.2" fill="#FCD34D"/>
+    <circle cx="12" cy="12" r="1.5" fill="#F59E0B"/>
+    </g>
+  </g>
+</svg>

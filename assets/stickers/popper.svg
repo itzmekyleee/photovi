@@ -1,0 +1,33 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "popper" — Party popper. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#C4B5FD"/>
+      <stop offset="1" stop-color="#7C3AED"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <path d="M3.2 20.8C3.2 20.8 4.6 14.4 10.6 8.4L15.6 13.4C9.6 19.4 3.2 20.8 3.2 20.8Z"
+          fill="url(#g)" stroke="#5B21B6" stroke-width="0.7" stroke-linejoin="round"/>
+    <ellipse cx="13.1" cy="10.9" rx="3.9" ry="2" transform="rotate(45 13.1 10.9)" fill="#DDD6FE"/>
+    <g><circle cx="18.2" cy="4.2" r="1.15" fill="#5EEAD4"/>
+       <circle cx="21.2" cy="8.6" r="0.95" fill="#FCD34D"/>
+       <circle cx="16.4" cy="2" r="0.85" fill="#F9A8D4"/>
+       <circle cx="20.6" cy="13.6" r="1.05" fill="#A78BFA"/>
+       <rect x="14" y="3.4" width="1.7" height="1.7" rx="0.5" fill="#FCD34D" transform="rotate(20 14.85 4.25)"/></g>
+    </g>
+  </g>
+</svg>

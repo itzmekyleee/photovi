@@ -2,8 +2,7 @@
 // header, photo cells, stickers, footer) and provides cell baking for the
 // GIF / grid flows.
 
-const EMOJI_FONT =
-  '"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+import { preloadStickers, resolveStickerId, stickerImage } from './stickers.js';
 
 export function loadImage(src) {
   return new Promise((resolve, reject) => {
@@ -110,15 +109,14 @@ function drawFitCell(ctx, img, x, y, w, h) {
 }
 
 function drawSticker(ctx, x, y, w, h, sticker) {
+  const img = stickerImage(resolveStickerId(sticker));
+  if (!img) return;
   const size = sticker.size * Math.min(w, h);
   ctx.save();
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.font = `${Math.round(size)}px ${EMOJI_FONT}`;
   ctx.shadowColor = 'rgba(0,0,0,0.28)';
   ctx.shadowBlur = size * 0.12;
   ctx.shadowOffsetY = size * 0.04;
-  ctx.fillText(sticker.e, x + sticker.x * w, y + sticker.y * h);
+  ctx.drawImage(img, x + sticker.x * w - size / 2, y + sticker.y * h - size / 2, size, size);
   ctx.restore();
 }
 
@@ -179,6 +177,7 @@ export async function composeStrip(opts) {
   ctx.restore();
 
   // Cells + stickers
+  await preloadStickers();
   const radius = Math.round(geo.cellW * 0.025);
   const loaded = await Promise.all(
     frames.map((f) => (f ? loadImage(f).catch(() => null) : null)),
@@ -232,6 +231,7 @@ export async function composeStrip(opts) {
 export async function bakeCellImages({ frames, orientation, stickerMap = {} }, cellW) {
   const cellH = Math.round(cellW / orientation.aspect);
   const out = [];
+  await preloadStickers();
   for (let i = 0; i < frames.length; i++) {
     const c = document.createElement('canvas');
     c.width = cellW;

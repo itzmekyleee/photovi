@@ -1,0 +1,38 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "butterfly" — Butterfly. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="gw" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#DDD6FE"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <linearGradient id="gb" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#99F6E4"/>
+      <stop offset="1" stop-color="#14B8A6"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <ellipse cx="8.2" cy="8.6" rx="4.6" ry="5.4" transform="rotate(-28 8.2 8.6)" fill="url(#gw)"/>
+    <ellipse cx="15.8" cy="8.6" rx="4.6" ry="5.4" transform="rotate(28 15.8 8.6)" fill="url(#gw)"/>
+    <ellipse cx="8.8" cy="16.4" rx="3.6" ry="3.9" transform="rotate(22 8.8 16.4)" fill="url(#gb)"/>
+    <ellipse cx="15.2" cy="16.4" rx="3.6" ry="3.9" transform="rotate(-22 15.2 16.4)" fill="url(#gb)"/>
+    <circle cx="7.4" cy="7.6" r="1.2" fill="#ffffff" opacity="0.5"/>
+    <circle cx="16.6" cy="7.6" r="1.2" fill="#ffffff" opacity="0.5"/>
+    <ellipse cx="12" cy="12.6" rx="1.3" ry="5.4" fill="#4C1D95"/>
+    <path d="M12 7.4C12 7.4 10.6 4.8 9 3.8M12 7.4C12 7.4 13.4 4.8 15 3.8"
+          stroke="#4C1D95" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,27 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <!-- Photovi sticker "heart" — Heart. Drawn onto the strip canvas as an
+       Image, so it needs explicit width/height. The keyline filter dilates the
+       artwork's alpha into a white die-cut edge, the way a physical sticker
+       reads against a photo. -->
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FBCFE8"/>
+      <stop offset="1" stop-color="#EC4899"/>
+    </linearGradient>
+    <filter id="keyline" x="-30%" y="-30%" width="160%" height="160%">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="1.1" result="spread"/>
+      <feFlood flood-color="#ffffff" flood-opacity="0.94" result="white"/>
+      <feComposite in="white" in2="spread" operator="in" result="edge"/>
+      <feMerge>
+        <feMergeNode in="edge"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <g filter="url(#keyline)">
+    <g transform="translate(12 12) scale(0.84) translate(-12 -12)">
+    <path d="M12 20.9C12 20.9 2.9 15.1 2.9 9.2C2.9 6.3 5.1 4.1 7.9 4.1C9.7 4.1 11.1 5.1 12 6.7C12.9 5.1 14.3 4.1 16.1 4.1C18.9 4.1 21.1 6.3 21.1 9.2C21.1 15.1 12 20.9 12 20.9Z" fill="url(#g)"/>
+    <ellipse cx="8.3" cy="8.5" rx="1.8" ry="1.1" transform="rotate(-32 8.3 8.5)" fill="#ffffff" opacity="0.45"/>
+    </g>
+  </g>
+</svg>

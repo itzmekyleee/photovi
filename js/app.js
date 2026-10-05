@@ -18,7 +18,7 @@ import {
 } from './camera.js';
 import { wait, runCountdown, flashOverlay } from './capture.js';
 import { composeStrip, computeGeometry, headerMetrics } from './composer.js';
-import { STICKERS, makeSticker } from './stickers.js';
+import { STICKERS, makeSticker, preloadStickers, stickerSrc } from './stickers.js';
 import {
   saveStrip,
   putStrip,
@@ -146,6 +146,22 @@ import {
     return n;
   }
 
+  const SPRITE = 'assets/icons/sprite.svg';
+
+  function icon(name) {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('class', 'icon');
+    svg.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', `${SPRITE}#${name}`);
+    svg.appendChild(use);
+    return svg;
+  }
+
+  function setIcon(svg, name) {
+    svg.firstElementChild.setAttribute('href', `${SPRITE}#${name}`);
+  }
+
   function adoptCanvas(target, src) {
     target.width = src.width;
     target.height = src.height;
@@ -197,9 +213,11 @@ import {
     'booth,gallery': 'right',
     'gallery,record': 'left',
     'gallery,booth': 'left',
+    'gallery,result': 'right',
     'record,gallery': 'right',
     'record,booth': 'right',
     'result,booth': 'right',
+    'result,gallery': 'left',
   };
 
   function showScreen(name, direction) {
@@ -434,9 +452,11 @@ import {
 
   function resizeLive() {
     syncDpr();
-    const rect = viewfinder.getBoundingClientRect();
-    liveCanvas.width = Math.max(1, Math.round(rect.width * getDpr()));
-    liveCanvas.height = Math.max(1, Math.round(rect.height * getDpr()));
+    // clientWidth/Height are layout px and ignore the CSS `zoom` used to scale
+    // the UI on tablets and phones, so the backing store always matches the
+    // displayed size (getBoundingClientRect would come back pre-scaled).
+    liveCanvas.width = Math.max(1, Math.round(viewfinder.clientWidth * getDpr()));
+    liveCanvas.height = Math.max(1, Math.round(viewfinder.clientHeight * getDpr()));
   }
 
   function liveLoop() {
@@ -648,9 +668,11 @@ import {
       const num = el('span', 'frame-num', String(i + 1));
       const tools = el('div', 'frame-tools');
 
-      const addTool = (glyph, title, disabled, fn) => {
-        const b = el('button', 'frame-tool', glyph);
+      const addTool = (name, title, disabled, fn) => {
+        const b = el('button', 'frame-tool');
+        b.appendChild(icon(name));
         b.title = title;
+        b.setAttribute('aria-label', title);
         b.addEventListener('click', (ev) => {
           ev.stopPropagation();
           if (disabled) return;
@@ -660,10 +682,10 @@ import {
         tools.appendChild(b);
       };
 
-      addTool('\u21B6', 'Retake this frame', state.sessionRunning || !camera.isRunning(), () => retakeFrame(i));
-      addTool('\u2039', 'Move left', i === 0 || state.sessionRunning, () => moveFrame(i, -1));
-      addTool('\u203A', 'Move right', i === state.frames.length - 1 || state.sessionRunning, () => moveFrame(i, 1));
-      addTool('\u2715', 'Remove frame', state.sessionRunning, () => deleteFrame(i));
+      addTool('retake', 'Retake this frame', state.sessionRunning || !camera.isRunning(), () => retakeFrame(i));
+      addTool('chevron-left', 'Move left', i === 0 || state.sessionRunning, () => moveFrame(i, -1));
+      addTool('chevron-right', 'Move right', i === state.frames.length - 1 || state.sessionRunning, () => moveFrame(i, 1));
+      addTool('close', 'Remove frame', state.sessionRunning, () => deleteFrame(i));
 
       item.append(img, num, tools);
       item.addEventListener('click', () => {
@@ -730,18 +752,22 @@ import {
   }
 
   // ---------- Stickers ----------
-  function buildEmojiRow() {
-    const row = $('emoji-row');
-    STICKERS.forEach((e) => {
-      const b = el('button', 'emoji-btn');
-      b.textContent = e;
-      b.title = `Stick a ${e}`;
-      b.addEventListener('click', () => addSticker(e));
+  function buildStickerRow() {
+    const row = $('sticker-row');
+    STICKERS.forEach(({ id, label }) => {
+      const b = el('button', 'sticker-btn');
+      b.title = `Stick ${/^[aeiou]/.test(label) ? 'an' : 'a'} ${label}`;
+      b.setAttribute('aria-label', b.title);
+      const thumb = el('img', 'sticker-thumb');
+      thumb.src = stickerSrc(id);
+      thumb.alt = '';
+      b.appendChild(thumb);
+      b.addEventListener('click', () => addSticker(id));
       row.appendChild(b);
     });
   }
 
-  function addSticker(emoji) {
+  function addSticker(id) {
     const i = state.selectedFrame;
     if (i == null || state.frames[i] == null) {
       toast('Select a frame to decorate it.');
@@ -749,7 +775,7 @@ import {
     }
     if (!state.stickerMap[i]) state.stickerMap[i] = [];
     const size = Number($('stick-size').value) / 100;
-    const st = makeSticker(emoji, size);
+    const st = makeSticker(id, size);
     state.stickerMap[i].push(st);
     state.selectedSticker = { i, idx: state.stickerMap[i].length - 1 };
     composeResult();
@@ -1354,7 +1380,7 @@ import {
 
   function applyUiTheme(t) {
     document.documentElement.setAttribute('data-theme', t);
-    themeGlyph.textContent = t === 'dark' ? '\u{1F319}' : '\u{2600}\u{FE0F}';
+    setIcon(themeGlyph, t === 'dark' ? 'moon' : 'sun');
     localStorage.setItem(UI_THEME_KEY, t);
   }
 
@@ -1377,7 +1403,7 @@ import {
 
   // ---------- Mute ----------
   function refreshMute() {
-    muteGlyph.textContent = isMuted() ? '\u{1F507}' : '\u{1F50A}';
+    setIcon(muteGlyph, isMuted() ? 'sound-off' : 'sound-on');
   }
 
   // ---------- Init ----------
@@ -1391,7 +1417,8 @@ import {
     buildFilterChips();
     buildResChips();
     buildThemeChips();
-    buildEmojiRow();
+    buildStickerRow();
+    preloadStickers();
     syncStyleToPanel();
     wireStyle();
     wireTabs();

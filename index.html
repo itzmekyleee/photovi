@@ -14,7 +14,9 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" type="image/svg+xml" href="assets/photovi_logo.svg" />
+    <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png" />
   </head>
   <body>
     <header class="topbar">
@@ -27,13 +29,17 @@
       </div>
       <div class="topbar-actions">
         <button class="icon-btn" id="mute-btn" title="Toggle sound" aria-label="Toggle sound">
-          <span class="icon-btn-glyph" id="mute-glyph">&#128266;</span>
+          <svg class="icon" id="mute-glyph" aria-hidden="true">
+            <use href="assets/icons/sprite.svg#sound-on"></use>
+          </svg>
         </button>
         <button class="icon-btn" id="theme-btn" title="Toggle dark mode" aria-label="Toggle dark mode">
-          <span class="icon-btn-glyph" id="theme-glyph" aria-hidden="true">&#127769;</span>
+          <svg class="icon" id="theme-glyph" aria-hidden="true">
+            <use href="assets/icons/sprite.svg#sun"></use>
+          </svg>
         </button>
         <button class="icon-btn" id="gallery-btn" title="Your strips" aria-label="Open your strips">
-          <span class="icon-btn-glyph">&#128451;</span>
+          <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#strip"></use></svg>
         </button>
       </div>
     </header>
@@ -41,154 +47,162 @@
     <main id="app">
       <!-- SCREEN 1: BOOTH -->
       <section id="screen-booth" class="screen active">
-        <div class="stage">
-          <div class="viewfinder viewfinder-landscape" id="viewfinder">
-            <video id="video" autoplay playsinline muted></video>
-            <canvas id="live-canvas"></canvas>
-            <div class="viewfinder-title" id="viewfinder-title">Live preview</div>
-            <div class="countdown" id="countdown"></div>
-            <div class="tap-pulse" id="tap-pulse"></div>
-            <div class="permission-gate" id="permission-gate">
-              <div class="gate-icon">📸</div>
-              <p class="gate-title">Your camera is off</p>
-              <p class="gate-sub">
-                Everything stays in your browser. Turn on your camera to get
-                started.
-              </p>
-              <button class="btn btn-primary" id="request-camera">
-                Enable camera
-              </button>
-              <p class="gate-error" id="gate-error"></p>
+        <div class="booth">
+          <div class="booth-main">
+            <div class="stage">
+              <div class="viewfinder viewfinder-landscape" id="viewfinder">
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="live-canvas"></canvas>
+                <div class="viewfinder-title" id="viewfinder-title">Live preview</div>
+                <div class="countdown" id="countdown"></div>
+                <div class="tap-pulse" id="tap-pulse"></div>
+                <div class="permission-gate" id="permission-gate">
+                  <div class="gate-icon">
+                    <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#camera-off"></use></svg>
+                  </div>
+                  <p class="gate-title">Your camera is off</p>
+                  <p class="gate-sub">
+                    Everything stays in your browser. Turn on your camera to get
+                    started.
+                  </p>
+                  <button class="btn btn-primary" id="request-camera">
+                    Enable camera
+                  </button>
+                  <p class="gate-error" id="gate-error"></p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Capture dock -->
+            <div class="capture-tray">
+              <div class="live-strip-wrap hidden" id="live-strip-wrap">
+                <canvas id="live-strip"></canvas>
+              </div>
+              <div class="capture-block">
+                <div class="shot-counter" id="shot-counter"></div>
+                <button class="btn btn-capture" id="start-capture" disabled>
+                  <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#play"></use></svg>
+                  Start session
+                </button>
+              </div>
             </div>
           </div>
-        </div>
 
-        <div class="panel">
-          <div class="panel-tabs">
-            <button class="panel-tab active" data-tab="capture">Capture</button>
-            <button class="panel-tab" data-tab="style">Style</button>
-          </div>
-
-          <!-- CAPTURE TAB -->
-          <div class="panel-body" data-tabbody="capture">
-            <div class="panel-section col-span-2" id="section-frame">
-              <div class="panel-section-header" data-toggle="section-frame">
-                <span class="panel-group-title" style="margin-bottom:0">Frame</span>
-                <span class="chevron">&#9662;</span>
+          <aside class="booth-rail">
+            <div class="panel">
+              <div class="panel-tabs">
+                <button class="panel-tab active" data-tab="capture">Capture</button>
+                <button class="panel-tab" data-tab="style">Style</button>
               </div>
-              <div class="panel-section-body">
-                <div class="panel-group-grid">
-                  <div class="field">
-                    <span class="control-label">Orientation</span>
-                    <div class="segmented-control" id="orientation-row"></div>
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Layout</span>
-                    <div class="chips" id="layout-row"></div>
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Shots</span>
-                    <div class="chips chips-shots" id="shot-row"></div>
-                    <div class="shot-stepper hidden" id="shot-stepper">
-                      <button class="stepper-btn" id="shot-minus" type="button" aria-label="Fewer shots">&#8722;</button>
-                      <span class="stepper-value" id="shot-value">6</span>
-                      <button class="stepper-btn" id="shot-plus" type="button" aria-label="More shots">&#43;</button>
+
+              <!-- CAPTURE TAB -->
+              <div class="panel-body" data-tabbody="capture">
+                <section class="panel-section" id="section-frame">
+                  <button class="panel-section-header" data-toggle="section-frame">
+                    <span class="panel-group-title">Frame</span>
+                    <span class="chevron"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-down"></use></svg></span>
+                  </button>
+                  <div class="panel-section-body">
+                    <div class="panel-group-grid">
+                      <div class="field col-span-2">
+                        <span class="control-label">Orientation</span>
+                        <div class="segmented-control" id="orientation-row"></div>
+                      </div>
+                      <div class="field col-span-2">
+                        <span class="control-label">Layout</span>
+                        <div class="chips" id="layout-row"></div>
+                      </div>
+                      <div class="field col-span-2">
+                        <span class="control-label">Shots</span>
+                        <div class="chips chips-shots" id="shot-row"></div>
+                        <div class="shot-stepper hidden" id="shot-stepper">
+                          <button class="stepper-btn" id="shot-minus" type="button" aria-label="Fewer shots"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#minus"></use></svg></button>
+                          <span class="stepper-value" id="shot-value">6</span>
+                          <button class="stepper-btn" id="shot-plus" type="button" aria-label="More shots"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#plus"></use></svg></button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
-            </div>
+                </section>
 
-            <div class="panel-section col-span-2" id="section-camera">
-              <div class="panel-section-header" data-toggle="section-camera">
-                <span class="panel-group-title" style="margin-bottom:0">Camera</span>
-                <span class="chevron">&#9662;</span>
-              </div>
-              <div class="panel-section-body">
-                <div class="panel-group-grid">
-                  <div class="field col-span-2">
-                    <span class="control-label">Filter</span>
-                    <div class="chips chips-filter" id="filter-row"></div>
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Resolution</span>
-                    <div class="chips" id="resolution-row"></div>
-                  </div>
-                  <div class="field">
-                    <span class="control-label">View</span>
-                    <div class="chips">
-                      <button class="chip" id="flip-camera">Flip camera</button>
-                      <button class="chip" id="mirror-toggle">Mirror: on</button>
-                      <button class="chip hidden" id="torch-btn">Torch</button>
+                <section class="panel-section" id="section-camera">
+                  <button class="panel-section-header" data-toggle="section-camera">
+                    <span class="panel-group-title">Camera</span>
+                    <span class="chevron"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-down"></use></svg></span>
+                  </button>
+                  <div class="panel-section-body">
+                    <div class="panel-group-grid">
+                      <div class="field col-span-2">
+                        <span class="control-label">Filter</span>
+                        <div class="chips chips-filter" id="filter-row"></div>
+                      </div>
+                      <div class="field">
+                        <span class="control-label">Resolution</span>
+                        <div class="chips" id="resolution-row"></div>
+                      </div>
+                      <div class="field">
+                        <span class="control-label">View</span>
+                        <div class="chips">
+                          <button class="chip" id="flip-camera">Flip camera</button>
+                          <button class="chip" id="mirror-toggle">Mirror: on</button>
+                          <button class="chip hidden" id="torch-btn">Torch</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </section>
+              </div>
+
+              <!-- STYLE TAB -->
+              <div class="panel-body hidden" data-tabbody="style">
+                <section class="panel-section" id="section-theme">
+                  <button class="panel-section-header" data-toggle="section-theme">
+                    <span class="panel-group-title">Theme</span>
+                    <span class="chevron"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-down"></use></svg></span>
+                  </button>
+                  <div class="panel-section-body">
+                    <div class="panel-group-grid">
+                      <div class="field col-span-2">
+                        <span class="control-label">Preset</span>
+                        <div class="chips chips-theme" id="theme-row"></div>
+                      </div>
+                    </div>
+                  </div>
+                </section>
+
+                <section class="panel-section" id="section-text">
+                  <button class="panel-section-header" data-toggle="section-text">
+                    <span class="panel-group-title">Text</span>
+                    <span class="chevron"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-down"></use></svg></span>
+                  </button>
+                  <div class="panel-section-body">
+                    <div class="panel-group-grid">
+                      <div class="field col-span-2">
+                        <span class="control-label">Strip title</span>
+                        <input class="text-input" id="title-input" type="text" maxlength="24" value="PHOTOVI" />
+                      </div>
+                      <div class="field col-span-2">
+                        <span class="control-label">Subtitle</span>
+                        <input class="text-input" id="subtitle-input" type="text" maxlength="42" placeholder="a little moment" />
+                      </div>
+                      <div class="field">
+                        <span class="control-label">Accent</span>
+                        <label class="color-field">
+                          <input type="color" id="accent-color" value="#8b5cf6" />
+                        </label>
+                      </div>
+                      <div class="field">
+                        <span class="control-label">Backdrop</span>
+                        <label class="color-field">
+                          <input type="color" id="bg-color" value="#f5f3ff" />
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </section>
               </div>
             </div>
-          </div>
-
-          <!-- STYLE TAB -->
-          <div class="panel-body hidden" data-tabbody="style">
-            <div class="panel-section col-span-2" id="section-theme">
-              <div class="panel-section-header" data-toggle="section-theme">
-                <span class="panel-group-title" style="margin-bottom:0">Theme</span>
-                <span class="chevron">&#9662;</span>
-              </div>
-              <div class="panel-section-body">
-                <div class="panel-group-grid">
-                  <div class="field col-span-2">
-                    <div class="chips chips-filter" id="theme-row"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="panel-section col-span-2" id="section-text">
-              <div class="panel-section-header" data-toggle="section-text">
-                <span class="panel-group-title" style="margin-bottom:0">Text</span>
-                <span class="chevron">&#9662;</span>
-              </div>
-              <div class="panel-section-body">
-                <div class="panel-group-grid">
-                  <div class="field">
-                    <span class="control-label">Strip title</span>
-                    <input class="text-input" id="title-input" type="text" maxlength="24" value="PHOTOVI" />
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Subtitle</span>
-                    <input class="text-input" id="subtitle-input" type="text" maxlength="42" placeholder="a little moment" />
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Accent</span>
-                    <label class="color-field">
-                      <input type="color" id="accent-color" value="#8b5cf6" />
-                    </label>
-                  </div>
-                  <div class="field">
-                    <span class="control-label">Backdrop</span>
-                    <label class="color-field">
-                      <input type="color" id="bg-color" value="#f5f3ff" />
-                    </label>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Capture tray -->
-        <div class="capture-tray">
-          <div class="live-strip-wrap hidden" id="live-strip-wrap">
-            <span class="control-label">Your strip</span>
-            <canvas id="live-strip"></canvas>
-          </div>
-          <div class="capture-block">
-            <span class="control-label">Session</span>
-            <div class="shot-counter" id="shot-counter"></div>
-            <button class="btn btn-capture" id="start-capture" disabled>
-              <span>&#9654;</span> Start session
-            </button>
-          </div>
+          </aside>
         </div>
       </section>
 
@@ -200,11 +214,11 @@
               <canvas id="result-canvas"></canvas>
             </div>
             <div class="result-actions">
-              <button class="btn btn-ghost btn-sm" id="dl-png">&#11015; PNG</button>
-              <button class="btn btn-ghost btn-sm" id="dl-jpg">&#11015; JPG</button>
-              <button class="btn btn-ghost btn-sm" id="copy-btn">&#128203; Copy</button>
-              <button class="btn btn-ghost btn-sm" id="share-btn">&#128228; Share</button>
-              <button class="btn btn-ghost btn-sm" id="gif-btn">&#127916; GIF</button>
+              <button class="btn btn-primary btn-sm" id="dl-png"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#download"></use></svg>PNG</button>
+              <button class="btn btn-ghost btn-sm" id="dl-jpg"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#download"></use></svg>JPG</button>
+              <button class="btn btn-ghost btn-sm" id="copy-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#copy"></use></svg>Copy</button>
+              <button class="btn btn-ghost btn-sm" id="share-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#share"></use></svg>Share</button>
+              <button class="btn btn-ghost btn-sm" id="gif-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#film"></use></svg>GIF</button>
             </div>
           </div>
           <aside class="result-side">
@@ -222,7 +236,7 @@
                 Stickers
                 <span class="side-hint">select a frame first</span>
               </div>
-              <div class="emoji-row" id="emoji-row"></div>
+              <div class="sticker-row" id="sticker-row"></div>
               <div class="stick-controls">
                 <label class="stick-size">
                   <span>Size</span>
@@ -239,14 +253,18 @@
       <!-- SCREEN 3: GALLERY -->
       <section id="screen-gallery" class="screen">
         <div class="gallery-head">
-          <button class="btn btn-ghost gallery-back" id="gallery-back">&#8592; Back</button>
-          <h2 class="gallery-title">Your strips</h2>
-          <span class="gallery-sub" id="gallery-sub"></span>
+          <button class="icon-btn gallery-back" id="gallery-back" title="Back to booth" aria-label="Back to booth">
+            <svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#arrow-left"></use></svg>
+          </button>
+          <div class="gallery-headings">
+            <h2 class="gallery-title">Your strips</h2>
+            <span class="gallery-sub" id="gallery-sub"></span>
+          </div>
         </div>
         <div class="gallery-filters" id="gallery-filters"></div>
         <div class="gallery-grid" id="gallery-grid"></div>
         <div class="gallery-empty hidden" id="gallery-empty">
-          <div class="gallery-empty-icon">&#128451;</div>
+          <div class="gallery-empty-icon"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#strip"></use></svg></div>
           <p>No strips yet. Take your first one and it will live here, safely in your browser.</p>
           <button class="btn btn-primary" data-screen-link="booth">Take a strip</button>
         </div>
@@ -258,8 +276,8 @@
           <div class="result-main">
             <div class="result-wrap">
               <canvas id="record-canvas"></canvas>
-              <button class="record-nav record-nav-prev" id="record-prev" type="button" aria-label="Previous strip">&#8249;</button>
-              <button class="record-nav record-nav-next" id="record-next" type="button" aria-label="Next strip">&#8250;</button>
+              <button class="record-nav record-nav-prev" id="record-prev" type="button" aria-label="Previous strip"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-left"></use></svg></button>
+              <button class="record-nav record-nav-next" id="record-next" type="button" aria-label="Next strip"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#chevron-right"></use></svg></button>
             </div>
           </div>
           <aside class="result-side">
@@ -270,16 +288,16 @@
               </div>
               <div class="record-meta" id="record-meta"></div>
               <div class="side-actions">
-                <button class="btn btn-ghost" id="record-back">&#8630; Back</button>
-                <button class="btn btn-danger" id="record-delete">Delete</button>
+                <button class="btn btn-ghost" id="record-back"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#arrow-left"></use></svg>Back</button>
+                <button class="btn btn-danger" id="record-delete"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#trash"></use></svg>Delete</button>
               </div>
             </div>
             <div class="result-actions result-actions-side">
-              <button class="btn btn-ghost" id="rec-dl-png">&#11015; PNG</button>
-              <button class="btn btn-ghost" id="rec-dl-jpg">&#11015; JPG</button>
-              <button class="btn btn-ghost" id="rec-copy-btn">&#128203; Copy</button>
-              <button class="btn btn-ghost" id="rec-share-btn">&#128228; Share</button>
-              <button class="btn btn-ghost" id="rec-gif-btn">&#127916; GIF</button>
+              <button class="btn btn-primary" id="rec-dl-png"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#download"></use></svg>PNG</button>
+              <button class="btn btn-ghost" id="rec-dl-jpg"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#download"></use></svg>JPG</button>
+              <button class="btn btn-ghost" id="rec-copy-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#copy"></use></svg>Copy</button>
+              <button class="btn btn-ghost" id="rec-share-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#share"></use></svg>Share</button>
+              <button class="btn btn-ghost" id="rec-gif-btn"><svg class="icon" aria-hidden="true"><use href="assets/icons/sprite.svg#film"></use></svg>GIF</button>
             </div>
           </aside>
         </div>

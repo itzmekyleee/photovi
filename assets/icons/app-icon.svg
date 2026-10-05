@@ -1,0 +1,48 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!--
+    Photovi app icon — full-bleed source for the rasterised launcher icons.
+    Unlike photovi_logo.svg (which has rounded corners and transparency for use
+    inside the page), this variant fills the whole square so platform masks,
+    launchers and iOS never expose a transparent edge.
+    Regenerate the PNGs with: python3 tools/generate-icons.py
+  -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1B2A2E"/>
+      <stop offset="55%" stop-color="#0F1B1E"/>
+      <stop offset="100%" stop-color="#070E10"/>
+    </linearGradient>
+
+    <radialGradient id="glow" cx="50%" cy="42%" r="58%">
+      <stop offset="0%" stop-color="#5EEAD4" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#5EEAD4" stop-opacity="0"/>
+    </radialGradient>
+
+    <linearGradient id="bladeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5EEAD4"/>
+      <stop offset="100%" stop-color="#0D9488"/>
+    </linearGradient>
+
+    <filter id="bladeShadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+      <feDropShadow dx="0" dy="14" stdDeviation="16" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <rect width="1024" height="1024" fill="url(#bgGradient)"/>
+  <rect width="1024" height="1024" fill="url(#glow)"/>
+
+  <!-- Camera aperture iris: 6 rotationally symmetric blades around a center opening.
+       tools/generate-icons.py splits this file on the id below, reusing the
+       backdrop for the maskable variant. -->
+  <g id="iris" filter="url(#bladeShadow)" transform="translate(512 512)">
+    <g id="blade" fill="url(#bladeGradient)">
+      <path d="M 0 -230 L 155 -95 L 70 -30 L -20 -160 Z"/>
+    </g>
+    <use href="#blade" transform="rotate(60)"/>
+    <use href="#blade" transform="rotate(120)"/>
+    <use href="#blade" transform="rotate(180)"/>
+    <use href="#blade" transform="rotate(240)"/>
+    <use href="#blade" transform="rotate(300)"/>
+  </g>
+</svg>
