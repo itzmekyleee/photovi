@@ -3,7 +3,7 @@
     Photovi icon sprite — 24x24 grid, 1.7 stroke, round caps/joins.
     Stroke colour is currentColor so every icon inherits the colour of the
     element that references it. Reference a symbol from markup with:
-      <svg class="icon"><use href="assets/icons/sprite.svg#download"></use></svg>
+      <svg class="icon"><use href="assets/icons/ui-icon-sprite.svg#download"></use></svg>
   -->
   <symbol id="camera" viewBox="0 0 24 24">
     <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">

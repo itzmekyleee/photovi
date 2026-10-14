@@ -2,7 +2,7 @@
 """Rasterise the Photovi launcher icons from their SVG sources.
 
 Sources
-    assets/icons/app-icon.svg              full-bleed mark
+    assets/icons/app-icon-source.svg      full-bleed mark
     assets/photovi_logo_foreground.svg    bare iris, no background
 
 The maskable icon is assembled from the foreground file: platform masks can
@@ -34,10 +34,10 @@ CHROME_CANDIDATES = ("google-chrome", "chromium", "chromium-browser", "google-ch
 
 # (output name, px, source, iris scale) — scale 1 means "use the source as-is".
 TARGETS = [
-    ("icon-192.png", 192, "app", 1.0),
-    ("icon-512.png", 512, "app", 1.0),
+    ("app-icon-192.png", 192, "app", 1.0),
+    ("app-icon-512.png", 512, "app", 1.0),
     ("apple-touch-icon.png", 180, "app", 0.86),
-    ("icon-maskable-512.png", 512, "maskable", 0.64),
+    ("app-icon-maskable-512.png", 512, "maskable", 0.64),
 ]
 
 HARNESS = """<!doctype html>
@@ -74,11 +74,11 @@ def strip_svg_wrapper(text: str) -> str:
 
 
 def app_icon_parts() -> tuple[str, str]:
-    """Split app-icon.svg into (defs + backdrop rects, iris group)."""
-    inner = strip_svg_wrapper((ICONS / "app-icon.svg").read_text())
+    """Split app-icon-source.svg into (defs + backdrop rects, iris group)."""
+    inner = strip_svg_wrapper((ICONS / "app-icon-source.svg").read_text())
     head, sep, iris = inner.partition('<g id="iris"')
     if not sep:
-        sys.exit('app-icon.svg is missing the <g id="iris"> split point.')
+        sys.exit('app-icon-source.svg is missing the <g id="iris"> split point.')
     return head.strip(), '<g id="iris"' + iris.rsplit("</svg>", 1)[0].strip()
 
 

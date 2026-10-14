@@ -326,7 +326,7 @@ body::before {
 }
 
 /* ---------- 5. Icons ----------
-   Every glyph is a symbol in assets/icons/sprite.svg. Strokes are currentColor,
+   Every glyph is a symbol in assets/icons/ui-icon-sprite.svg. Strokes are currentColor,
    so an icon simply inherits the colour of the control that contains it. */
 .icon {
     width: 18px;

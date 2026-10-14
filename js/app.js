@@ -146,7 +146,7 @@ import {
     return n;
   }
 
-  const SPRITE = 'assets/icons/sprite.svg';
+  const SPRITE = 'assets/icons/ui-icon-sprite.svg';
 
   function icon(name) {
     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

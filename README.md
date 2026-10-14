@@ -62,7 +62,7 @@ php -S localhost:8000
 ```
 photovi/
 ├── assets/
-│   ├── icons/          # PWA icons (PNG) + SVG sprite + app-icon source
+│   ├── icons/          # PWA icons (PNG) + UI icon sprite + app-icon source
 │   ├── stickers/       # Sticker SVG assets
 │   ├── photovi_logo.svg
 │   └── photovi_logo_foreground.svg
@@ -80,7 +80,7 @@ photovi/
 ## Assets
 
 - **Source SVGs**: Logos and stickers live in `assets/` as SVG files
-- **SVG Sprite**: UI icons are defined in `assets/icons/sprite.svg` and referenced via `<use href="...">`
+- **SVG Sprite**: UI icons are defined in `assets/icons/ui-icon-sprite.svg` and referenced via `<use href="...">`
 - **Generated Icons**: PWA PNG icons in `assets/icons/` are generated from SVG sources using `tools/generate-icons.py`. Run it with Python 3 (requires Chrome/Chromium headless and optionally Pillow for optimization).
 
 ```bash
